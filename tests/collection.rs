@@ -111,7 +111,7 @@ fn test_mutation_and_finding() {
 
 #[test]
 fn test_insert_failure() {
-    let uri        = Uri::new("mongodb://localhost:27018/").unwrap(); // There should be no mongo server here
+    let uri        = Uri::new("mongodb://localhost:27018/?serverSelectionTimeoutMS=1").unwrap(); // There should be no mongo server here
     let pool       = ClientPool::new(uri, None);
     let client     = pool.pop();
     let collection = client.get_collection("rust_driver_test", "items");
@@ -120,7 +120,7 @@ fn test_insert_failure() {
     let result = collection.insert(&document, None);
     assert!(result.is_err());
     assert_eq!(
-        "MongoError (BsoncError: Failed to connect to target host: localhost:27018)",
+        "MongoError (BsoncError: Timed out trying to select a server)",
         format!("{:?}", result.err().unwrap())
     );
 }

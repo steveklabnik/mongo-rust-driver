@@ -19,4 +19,3 @@ git = "https://github.com/zonyitoo/bson-rs.git"
 
 [dependencies.mongo_c_driver_wrapper]
 path    = "mongo_c_driver_wrapper"
-version = "1.1.10"
