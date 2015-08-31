@@ -10,7 +10,13 @@ use std::process::Command;
 static VERSION: &'static str = "1.1.10"; // Should be the same as the version in the manifest
 
 fn main() {
+    //for (key, value) in env::vars() {
+    //    println!("{}: {}", key, value);
+    //}
+
+    //println!("{:?}", env::var("DEP_OPENSSL_ROOT").unwrap());
     let out_dir_var = env::var("OUT_DIR").unwrap();
+
     let out_dir = format!("{}/{}", out_dir_var, VERSION);
     let current_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
     let driver_src_path = format!("mongo-c-driver-{}", VERSION);
@@ -107,15 +113,7 @@ fn main() {
     }
 
     // Output to Cargo
-    println!("cargo:root={}", &out_dir);
-    println!("cargo:libdir={}/lib", &out_dir);
-    println!("cargo:include={}/include", &out_dir);
-    println!("cargo:rustc-link-search={}/lib", &out_dir);
+    println!("cargo:rustc-link-search=native={}/lib", &out_dir);
     println!("cargo:rustc-link-lib=static=bson-1.0");
     println!("cargo:rustc-link-lib=static=mongoc-1.0");
-
-    // Link openssl dynamically
-    // TODO see if we can make this compatible with openssl-sys
-    println!("cargo:rustc-link-lib=dylib=ssl");
-    println!("cargo:rustc-link-lib=dylib=crypto");
 }
